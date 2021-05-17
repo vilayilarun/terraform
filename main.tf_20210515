@@ -1,0 +1,44 @@
+provider "aws" {
+    region = "ap-south-1"
+    access_key = "AKIAY27UWO7TONGUKAXF"
+    secret_key = "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"
+}
+
+resource "aws_vpc" "development_vpc" {
+    cidr_block = "10.0.0.0/16"
+    tags = {
+        Name: "development_vpc"
+    }
+}
+
+resource "aws_subnet" "dev-sub" {
+    vpc_id = aws_vpc.development_vpc.id
+    cidr_block = "10.0.10.0/24"
+    availability_zone = "ap-south-1a"
+    tags = {
+        Name: "deb-sub"
+    }
+}
+data "aws_vpc" "existing_vpc" {
+    default = true
+}
+
+varible "subnet_cidr_block" {
+    descriptions = "subnet cidr block"
+}
+resource "aws_subnet" "dev-sub-2" {
+    vpc_id = data.aws_vpc.existing_vpc.id   
+    cidr_block = var.subnet_cidr_block
+    availability_zone = "ap-south-1a"
+    tags = {
+        Name: "dev-sub"
+    }
+}
+
+output "dev-vpc-id" {
+    value = aws_vpc.development_vpc.id
+}
+
+output "subnet" {
+    value = aws_subnet.dev-sub.id
+}
