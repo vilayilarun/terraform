@@ -23,3 +23,23 @@ resource "aws_subnet" "myapp-subnet-1" {
     "Name" = "${environment}-subnet"
   }
 }
+
+resource "aws_route_table" "myapp-rtb" {
+  vpc_id = aws_vpc.myapp-vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.myapp-igw.id
+  }
+  tags = {
+    "Name" = "${environment}-rtb"
+  }
+  
+}
+
+resource "aws_internet_gateway" "myapp-igw" {
+  vpc_id = aws_vpc.myapp-vpc.id
+  tags_all = {
+    "Name" = "${environment}-igw"
+  }
+  
+}
