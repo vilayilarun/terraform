@@ -107,7 +107,7 @@ resource "aws_instance" "myapp-server" {
   vpc_security_group_ids = [aws_security_group.myapp-sg.id]
   associate_public_ip_address = true
   key_name = aws_key_pair.server-key.key_name
-
+  user_data = file("entrypoint.sh")
   tags = {
     Name = "${var.environment}-server"
   }
