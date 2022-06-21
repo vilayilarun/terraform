@@ -9,6 +9,7 @@ variable avail-zone {}
 variable myip {}
 variable instance_type {}
 variable pub-key-location {}
+variable private-key-location {}
 
 resource "aws_vpc" "myapp-vpc" {
   cidr_block = var.vpc-cidr-block
@@ -111,9 +112,33 @@ resource "aws_instance" "myapp-server" {
   tags = {
     Name = "${var.environment}-server"
   }
+  # provisioners
+connection {
+  type = "ssh"
+  host = self.public_ip
+  user = "ec2-user"
+  private_key = file(var.private-key-location)
+}
+provisioner "file" {
+  source = "entrypoint.sh"
+  destination = "/home/ec2-user/entrypoint.sh"
+
+}
+provisioner "remote-exec" {
+  script = file("entrypoint.sh")
+
+}
+provisioner "remote-exec" {
+  inline = [
+    "yum upadate",
+    "dnf install docker"
+  ]
+
+}
 }
 
 output "ec2-public-ip" {
   value = aws_instance.myapp-server.public_ip
   
 }
+
