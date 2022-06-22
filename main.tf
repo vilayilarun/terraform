@@ -2,15 +2,6 @@ provider "aws" {
   region = "ap-south-1"
 }
 
-variable vpc-cidr-block {}
-variable subnet-cidr-block {}
-variable environment {}
-variable avail-zone {}
-variable myip {}
-variable instance_type {}
-variable pub-key-location {}
-variable private-key-location {}
-
 resource "aws_vpc" "myapp-vpc" {
   cidr_block = var.vpc-cidr-block
   tags = {
@@ -136,9 +127,3 @@ provisioner "remote-exec" {
 
 }
 }
-
-output "ec2-public-ip" {
-  value = aws_instance.myapp-server.public_ip
-  
-}
-
