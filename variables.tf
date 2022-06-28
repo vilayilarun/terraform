@@ -1,8 +1,3 @@
-variable vpc-cidr-block {}
-variable subnet-cidr-block {}
-variable environment {}
-variable avail-zone {}
-variable myip {}
-variable instance_type {}
-variable pub-key-location {}
-variable private-key-location {}
+variable vpc_cidr_block {}
+variable private_subnet_cidr_blocks {}
+variable public_subnet_cidr_blocks {}
